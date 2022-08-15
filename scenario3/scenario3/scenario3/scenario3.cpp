@@ -98,7 +98,7 @@ class Rectangle : private Shapes {
 class Triangle : private Shapes {
     float calculateArea() { return (width * height) / 2; } // Calculates area of triangle
     float calculatePerimeter() { // Calculates perimeter of triangle
-        return width + height + sqrt(pow(width, 2) + pow(height, 2)); 
+        return width + sqrt(pow(width / 2, 2) + pow(height, 2)) * 2; 
     }
     
     public:

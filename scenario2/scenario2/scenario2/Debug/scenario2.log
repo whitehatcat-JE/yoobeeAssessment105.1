@@ -1,5 +1,6 @@
 ﻿  scenario2.cpp
-C:\Users\270168415\OneDrive - UP Education\Documents\GitHub\yoobeeGroupProject103\yoobeeAssessment105.1\scenario2\scenario2\scenario2\scenario2.cpp(154,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\270168415\OneDrive - UP Education\Documents\GitHub\yoobeeGroupProject103\yoobeeAssessment105.1\scenario2\scenario2\scenario2\scenario2.cpp(161,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\270168415\OneDrive - UP Education\Documents\GitHub\yoobeeGroupProject103\yoobeeAssessment105.1\scenario2\scenario2\scenario2\scenario2.cpp(168,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\270168415\OneDrive - UP Education\Documents\GitHub\yoobeeGroupProject103\yoobeeAssessment105.1\scenario2\scenario2\scenario2\scenario2.cpp(101,39): warning C4018: '<': signed/unsigned mismatch
+C:\Users\270168415\OneDrive - UP Education\Documents\GitHub\yoobeeGroupProject103\yoobeeAssessment105.1\scenario2\scenario2\scenario2\scenario2.cpp(184,27): warning C4018: '<': signed/unsigned mismatch
+C:\Users\270168415\OneDrive - UP Education\Documents\GitHub\yoobeeGroupProject103\yoobeeAssessment105.1\scenario2\scenario2\scenario2\scenario2.cpp(193,27): warning C4018: '<': signed/unsigned mismatch
+C:\Users\270168415\OneDrive - UP Education\Documents\GitHub\yoobeeGroupProject103\yoobeeAssessment105.1\scenario2\scenario2\scenario2\scenario2.cpp(202,27): warning C4018: '<': signed/unsigned mismatch
   scenario2.vcxproj -> C:\Users\270168415\OneDrive - UP Education\Documents\GitHub\yoobeeGroupProject103\yoobeeAssessment105.1\scenario2\scenario2\Debug\scenario2.exe

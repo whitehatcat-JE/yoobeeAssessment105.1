@@ -7,42 +7,36 @@
 using std::string;
 using std::vector;
 // Race enum
-enum Species {
+enum class Species {
     HUMAN,
     ELF,
     DWARF,
     ORC,
     TROLL
 };
+
 // Player class
 class Player {
     // Player information variables
     string name;
     Species race;
-    int abilityClass;
     int hitPoints;
     int magicPoints;
 public:
     // Class constructor
-    Player(string plrName, Species plrRace, int hitAmt, int magicAmt, int ability) {
+    Player(string plrName, Species plrRace, int hitAmt, int magicAmt) {
         name = plrName;
         race = plrRace;
         hitPoints = hitAmt;
         magicPoints = magicAmt;
-        abilityClass = ability;
     }
     // Name getter
-    string getName() {
-        return name;
-    }
+    string getName() { return name; }
     // Race getter
-    Species getRace() {
-        return race;
-    }
+    Species getRace() { return race; }
     // Converts race into string and returns it
     string whatRace() {
-        switch (race)
-        {
+        switch (race) { // Note: Return breaks out of switch, so breaks not needed
         case Species::HUMAN:
             return "human";
         case Species::ELF:
@@ -58,50 +52,92 @@ public:
         }
     }
     // Hit points getter
-    int getHitPoints() {
-        return hitPoints;
-    }
+    int getHitPoints() { return hitPoints; }
     // Magic points getter
-    int getMagicPoints() {
-        return magicPoints;
-    }
+    int getMagicPoints() { return magicPoints; }
     // Name setter
-    void setName(string newName) {
-        name = newName;
-    }
+    void setName(string newName) { name = newName; }
     // Race setter
-    void setRace(Species newRace) {
-        race = newRace;
-    }
+    void setRace(Species newRace) { race = newRace; }
     // Hit points setter
-    void setHitPoints(int newHitPoints) {
-        hitPoints = newHitPoints;
-    }
+    void setHitPoints(int newHitPoints) { hitPoints = newHitPoints; }
     // Magic points setter
-    void setMagicPoints(int newMagicPoints) {
-        magicPoints = newMagicPoints;
-    }
+    void setMagicPoints(int newMagicPoints) { magicPoints = newMagicPoints; }
     // Attack method
-    string attack() {
-        switch (abilityClass) {
-        case 1:
-            return "I will destroy you with my sword!";
-        case 2:
-            return "I will assault you with holy wrath!";
-        case 3:
-            return "I will crush you with my arcane missiles!";
-        default:
-            return "No attack method defined yet!";
+    string attack() { return "No attack method defined yet!"; }
+};
+
+// Warrior specialization class
+class Warrior : public Player {
+public:
+    Warrior(string plrName, Species plrRace, int hitAmt, int magicAmt) : Player(plrName, plrRace, hitAmt, magicAmt) {}
+    string attack() { return "I will destroy you with my sword!"; }
+};
+
+// Priest specialization class
+class Priest : public Player {
+public:
+    Priest(string plrName, Species plrRace, int hitAmt, int magicAmt) : Player(plrName, plrRace, hitAmt, magicAmt) {}
+    string attack() { return "I will assault you eith holy wrath!"; }
+};
+
+// Mage specialization class
+class Mage : public Player {
+public:
+    Mage(string plrName, Species plrRace, int hitAmt, int magicAmt) : Player(plrName, plrRace, hitAmt, magicAmt) {}
+    string attack() { return "I will crush you with my arcane missiles!"; }
+};
+
+// Returns a user-inputted int that matches a given range
+int getInt(int lowerLimit = 1, int upperLimit = 100000) {
+    string input;
+    std::cin >> input;
+    // Checks something has been inputted
+    if (input == "") {
+        std::cout << "Alert! Nothing inputted, please try again: ";
+        return getInt(lowerLimit, upperLimit);
+    }
+    // Checks input is a number
+    for (int inputChar = 0; inputChar < input.size(); inputChar++) {
+        if (input[inputChar] < 47 || input[inputChar] > 57) {
+            std::cout << "\nError: Input must be a number\nPlease try again: ";
+            return getInt(lowerLimit, upperLimit); // Repeats function
         }
     }
-};
+    int inputInt = stoi(input);
+    // Checks number is within range
+    if (inputInt < lowerLimit) { // Lower limit
+        std::cout << "\nError: Input must be greater or equal to " << lowerLimit << "\nPlease try again: ";
+        return getInt(lowerLimit, upperLimit); // Repeats function
+    }
+    else if (inputInt > upperLimit) { // Upper limit
+        std::cout << "\nError: Input must be less than or equal to " << upperLimit << "\nPlease try again: ";
+        return getInt(lowerLimit, upperLimit); // Repeats function
+    }
+    // Returns integer
+    return inputInt;
+}
+
+// Returns a string with spaces
+string getSpaced() {
+    string input = "";
+    if (std::cin.peek() != '\n') std::cin.putback('\n'); // Stops first char from being omitted during cin
+    std::cin.ignore();
+    getline(std::cin, input);
+    // Checks something has been inputted
+    if (input == "") {
+        std::cout << "Alert! Nothing inputted, please try again:\n";
+        return getSpaced();
+    }
+    return input;
+}
 
 int main()
 {
     // Players storage
-    vector<Player*> warriors;
-    vector<Player*> priests;
-    vector<Player*> mages;
+    vector<Warrior*> warriors;
+    vector<Priest*> priests;
+    vector<Mage*> mages;
 
     // Create players
     while (true) {
@@ -111,36 +147,31 @@ int main()
             "\t1. Create a Warrior!\n" <<
             "\t2. Create a Priest!\n" <<
             "\t3. Create a Mage!\n" <<
-            "\t4. Finish creating player characters!\n";
-        int choice;
-        std::cin >> choice;
-        if (choice == 4) {
-            break;
-        }
+            "\t4. Finish creating player characters!\n: ";
+        int classChoice = getInt(1, 4);
+        if (classChoice == 4) { break; }
         // Race selection
         std::cout << "Which race do you want?\n" <<
             "\t1. Human!\n" <<
             "\t2. Elf!\n" <<
             "\t3. Dwarf!\n" <<
             "\t4. Orc!\n" <<
-            "\t5. Troll!\n";
-        int race;
-        std::cin >> race;
+            "\t5. Troll!\n: ";
+        int race = getInt(1, 5);
         // Name selection
-        string name;
         std::cout << "What would you like to name your character? ";
-        std::cin >> name;
+        string name = getSpaced();
         // Stores player in vector based on class selection
-        switch (choice)
+        switch (classChoice)
         {
             case 1:
-                warriors.push_back(new Player(name, Species(race-1), 200, 0, 1));
+                warriors.push_back(new Warrior(name, Species(race-1), 200, 0));
                 break;
             case 2:
-                priests.push_back(new Player(name, Species(race-1), 100, 200, 2));
+                priests.push_back(new Priest(name, Species(race-1), 100, 200));
                 break;
             case 3:
-                mages.push_back(new Player(name, Species(race-1), 200, 0, 3));
+                mages.push_back(new Mage(name, Species(race-1), 200, 0));
                 break;
             default:
                 std::cout << "Unknown class selected!";
@@ -150,24 +181,30 @@ int main()
 
     // Display all players
     // Warrior printout
-    std::cout << "\n----------------\nWARRIORS LIST:\n----------------\n";
-    for (int i = 0; i < warriors.size(); i++) {
-        std::cout << "I am a warrior with name " << warriors[i]->getName() <<
-            " and with race " << warriors[i]->whatRace() <<
-            " and my attack is : " << warriors[i]->attack() << std::endl;
+    for (int plr = 0; plr < warriors.size(); plr++) {
+        if (plr == 0) { std::cout << "\n----------------\nWARRIORS LIST:\n----------------\n"; };
+        std::cout << "I am a warrior with name " << warriors[plr]->getName() <<
+            " and with race " << warriors[plr]->whatRace() <<
+            " and my attack is : " << warriors[plr]->attack() << std::endl;
+        // Frees Warrior from stack
+        delete warriors[plr];
     }
     // Priest printout
-    std::cout << "\n----------------\nPRIESTS LIST:\n-----------------\n";
-    for (int i = 0; i < priests.size(); i++) {
-        std::cout << "I am a priest with name " << priests[i]->getName() <<
-            " and with race " << priests[i]->whatRace() <<
-            " and my attack is : " << priests[i]->attack() << std::endl;
+    for (int plr = 0; plr < priests.size(); plr++) {
+        if (plr == 0) { std::cout << "\n----------------\nPRIESTS LIST:\n----------------\n"; };
+        std::cout << "I am a priest with name " << priests[plr]->getName() <<
+            " and with race " << priests[plr]->whatRace() <<
+            " and my attack is : " << priests[plr]->attack() << std::endl;
+        // Frees Priest from stack
+        delete priests[plr];
     }
     // Mage printout
-    std::cout << "\n----------------\nMAGES LIST:\n----------------\n";
-    for (int i = 0; i < mages.size(); i++) {
-        std::cout << "I am a mage with name " << mages[i]->getName() <<
-            " and with race " << mages[i]->whatRace() <<
-            "and my attack is : " << mages[i]->attack() << std::endl;
+    for (int plr = 0; plr < mages.size(); plr++) {
+        if (plr == 0) { std::cout << "\n----------------\nMAGES LIST:\n----------------\n"; };
+        std::cout << "I am a mage with name " << mages[plr]->getName() <<
+            " and with race " << mages[plr]->whatRace() <<
+            " and my attack is : " << mages[plr]->attack() << std::endl;
+        // Frees Mage from stack
+        delete mages[plr];
     }
 }
