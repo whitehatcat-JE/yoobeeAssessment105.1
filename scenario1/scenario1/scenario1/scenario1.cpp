@@ -29,11 +29,9 @@ public:
         std::cout << "Input direction (" << (isLat ? "E/W): " : "N/S): ");
         std::cin >> direction;
     }
-    // Returns position & direction variables
+    // Position & direction getters
     int getDegrees() { return degrees; }
-
     float getMinutes() { return minutes; }
-
     char getDirection() { return direction; }
 };
 
