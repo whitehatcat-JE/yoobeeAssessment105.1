@@ -9,20 +9,46 @@ using std::string;
 // Inputs Superclass (For retrieving constrained user inputs)
 class Inputs {
 public:
-    // Returns a user-inputted int that matches a given range
-    int getInt(int lower = 1, int upper = 100000) {
+    // Returns a user-inputted real double
+    double getNum() {
         string input;
         std::cin >> input;
         // Checks something has been inputted
         if (input == "") {
             std::cout << "Alert! Nothing inputted\nPlease try again: ";
-            return getInt(lower, upper);
+            return getNum();
+        }
+        // Checks input is a number
+        bool decimalFound = false;
+        for (int inputChar = 0; inputChar < (int) input.size(); inputChar++) {
+            if ((input[inputChar] < 47 || input[inputChar] > 57) && !(input[inputChar] == '.' && !decimalFound)) {
+                decimalFound = true;
+                std::cout << "\nError: Input must be a number\nPlease try again: ";
+                return getNum(); // Repeats function
+            }
+        }
+        double inputDouble = stod(input);
+        // Checks number is within range
+        if (inputDouble <= 0) {
+            std::cout << "\nError: Input must be greater than 0\nPlease try again: "; 
+            return getNum(); // Repeats function
+        } else return inputDouble; // Returns double
+    }
+
+    // Returns a user-inputted int that matches a given range
+    int getNum(int lower, int upper) {
+        string input;
+        std::cin >> input;
+        // Checks something has been inputted
+        if (input == "") {
+            std::cout << "Alert! Nothing inputted\nPlease try again: ";
+            return getNum(lower, upper);
         }
         // Checks input is a number
         for (int inputChar = 0; inputChar < (int) input.size(); inputChar++) {
             if (input[inputChar] < 47 || input[inputChar] > 57) {
                 std::cout << "\nError: Input must be a number\nPlease try again: ";
-                return getInt(lower, upper); // Repeats function
+                return getNum(lower, upper); // Repeats function
             }
         }
         int inputInt = stoi(input);
@@ -30,7 +56,7 @@ public:
         if (inputInt < lower || inputInt > upper) {
             std::cout << "\nError: Input must be between " << lower << " and " << upper << 
                 "\nPlease try again: ";
-            return getInt(lower, upper); // Repeats function
+            return getNum(lower, upper); // Repeats function
         } else return inputInt; // Returns integer
     }
 };
@@ -38,7 +64,7 @@ public:
 // Shape calculations
 #pragma region ShapeCalculators
 // Shapes Superclass
-class Shapes : private Inputs {
+class Shapes : protected Inputs {
 protected:
     // Dimension Variables
     double width, height;
@@ -48,9 +74,9 @@ protected:
     // Gets user input for width and height
     void getDimensions() {
         std::cout << "Enter the width (cm): ";
-        std::cin >> width;
+        width = getNum();
         std::cout << "Enter the height (cm): ";
-        std::cin >> height;
+        height = getNum();
     }
     // Math operation selection menu
     int calculationMenu(string areaOption, string perimeterOption, bool isCircle = false) {
@@ -59,7 +85,7 @@ protected:
             (isCircle ? "Circumference (" : "Perimeter (") << perimeterOption <<
             ")\n3. Go back to main menu\n\nPlease enter your choice (1-3): ";
         // Get user input
-        return getInt(1, 3);
+        return getNum(1, 3);
     }
     // Draws line of given length
     void displayLine(int length) { std::cout << string(length, '*') << std::endl; }
@@ -69,7 +95,7 @@ class Square : private Shapes {
     // Gets user input only for width
     void getDimensions() {
         std::cout << "Enter length(cm): ";
-        std::cin >> width;
+        width = getNum();
         height = width;
     }
 public:
@@ -121,7 +147,7 @@ public:
     void menu() {
         std::cout << "\n**********\nTriangle Calculator\n**********\n\n";
         for (int line = 0; line < 5; line++) { displayLine(1+(2*line)); } // Draw triangle
-        switch (calculationMenu("Base * Height / 2", "Base + Height + Hypotenuse")) { // Determine which calculation to perform
+        switch (calculationMenu("Base * Height / 2", "Base + Hypotenuse * 2")) { // Determine which calculation to perform
             case 1: // Display area result
                 getDimensions();
                 std::cout << "The area is: " << calculateArea() << "sq.cm\n";
@@ -140,7 +166,7 @@ class Circle : private Shapes {
     // Gets user input only for radius
     void getDimensions() {
         std::cout << "Enter radius(cm): ";
-        std::cin >> width;
+        width = getNum();
         height = width;
     }
     
@@ -189,7 +215,7 @@ int main()
             "1. Square\n2. Rectangle\n3. Triangle\n4. Circle\n5. Exit" << 
             "\n\nPlease enter your choice (1-5): ";
         // Get user input
-        int choice = inputManager.getInt(1, 5);
+        int choice = inputManager.getNum(1, 5);
         switch (choice) { // Go to corresponding shape menu
             case 1:
                 square.menu();

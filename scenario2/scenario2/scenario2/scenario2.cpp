@@ -6,6 +6,8 @@
 // Using namespaces
 using std::string;
 using std::vector;
+// Player Management Scripts
+#pragma region PlayerManagers
 // Race enum
 enum class Species {
     HUMAN,
@@ -75,7 +77,9 @@ public:
     Mage(string plrName, Species plrRace, int hitAmt, int magicAmt) : Player(plrName, plrRace, hitAmt, magicAmt) {}
     string attack() { return "I will crush you with my arcane missiles!"; }
 };
-
+#pragma endregion PlayerManagers
+// Input Error Preventors
+#pragma region InputHandling
 // Returns a user-inputted int that matches a given range
 int getInt(int lower = 1, int upper = 100000) {
     std::string input;
@@ -114,6 +118,7 @@ string getSpaced() {
     }
     return input;
 }
+#pragma endregion InputHandling
 
 int main()
 {

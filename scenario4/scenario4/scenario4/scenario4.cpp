@@ -5,6 +5,7 @@
 #include <string>
 // Using namespaces
 using std::vector;
+#pragma region AlienManager
 // Individual Alien Class (Manages 1 alien instance)
 class Alien {
     // Biological information
@@ -49,7 +50,9 @@ public:
         return child; // Returns child instance
     }
 };
+#pragma endregion AlienManager
 
+#pragma region InputHandling
 // Returns a user-inputted int that matches a given range
 int getInt(int lower = 1, int upper = 100000) {
     std::string input;
@@ -74,6 +77,7 @@ int getInt(int lower = 1, int upper = 100000) {
         return getInt(lower, upper); // Repeats function
     } else return inputInt; // Returns integer
 }
+#pragma endregion InputHandling
 
 int main()
 {
